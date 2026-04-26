@@ -1,0 +1,7 @@
+venv/
+ml-service/venv/
+__pycache__/
+*.pyc
+.env
+service-account.json
+ml-service/service-account.json
