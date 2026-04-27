@@ -1,0 +1,39 @@
+/* FULL SCREEN SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left:0;
+  right: 0;   /* hide off screen */
+  width: 100vw;
+  height: 100vh;
+  background: #0f172a; /* dark theme */
+  color: white;
+  padding: 30px;
+  transform: translateX(100%);
+  transition: right 0.4s ease;
+  padding: 60px 30px 30px;
+  z-index: 99999;
+}
+
+/* When open */
+.sidebar.open {
+
+   transform: translateX(0);
+}
+
+/* Close button */
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+/* Optional overlay blur */
+.overlay {
+  display: none; /* not needed now */
+}

@@ -1,0 +1,183 @@
+/* ================= PAGE ================= */
+
+.media-page {
+padding: 24px;
+background: #f5f7fb;
+min-height: 100vh;
+}
+
+/* ================= HEADER ================= */
+
+.media-header {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+/* Preview Image */
+.media-preview {
+  width: 300px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #e5e7eb; /* fallback if image fails */
+}
+
+/* Right Info */
+.media-details {
+flex: 1;
+}
+
+.media-title {
+font-size: 22px;
+font-weight: 600;
+margin-bottom: 10px;
+color: #111827;
+}
+
+.media-meta {
+font-size: 14px;
+color: #555;
+margin-bottom: 6px;
+}
+
+/* Link */
+.media-link {
+display: inline-block;
+margin-top: 8px;
+font-size: 14px;
+color: #2563eb;
+text-decoration: none;
+}
+
+.media-link:hover {
+text-decoration: underline;
+}
+
+/* ================= DETECTIONS ================= */
+
+.detections-section {
+margin-top: 10px;
+}
+
+.detections-title {
+font-size: 18px;
+font-weight: 600;
+margin-bottom: 14px;
+color: #111827;
+}
+
+/* Detection List */
+.detection-list {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+/* Detection Card */
+.detection-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.detection-card:hover {
+transform: translateY(-2px);
+}
+
+/* High Risk */
+.detection-card.high-risk {
+border: 2px solid #ef4444;
+}
+
+/* Info */
+.detection-info {
+font-size: 14px;
+}
+
+.detection-label {
+color: #2563eb;
+font-weight: 500;
+margin: 4px 0;
+}
+
+/* Status */
+.status-pending {
+color: #f59e0b;
+font-weight: 600;
+}
+
+.status-authorized {
+color: #16a34a;
+font-weight: 600;
+}
+
+.status-unauthorized {
+color: #dc2626;
+font-weight: 600;
+}
+
+/* Source Link */
+.detection-link {
+display: inline-block;
+margin-top: 6px;
+font-size: 13px;
+color: #2563eb;
+text-decoration: none;
+}
+
+.detection-link:hover {
+text-decoration: underline;
+}
+
+/* ================= BUTTONS ================= */
+
+.media-actions {
+display: flex;
+gap: 10px;
+}
+
+.btn {
+padding: 6px 12px;
+border-radius: 8px;
+border: none;
+color: white;
+cursor: pointer;
+font-size: 13px;
+transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn:active {
+transform: scale(0.95);
+}
+
+.btn-approve {
+background: #22c55e;
+}
+
+.btn-approve:hover {
+background: #16a34a;
+}
+
+.btn-reject {
+background: #ef4444;
+}
+
+.btn-reject:hover {
+background: #dc2626;
+}
+
+/* ================= STATES ================= */
+
+.loading,
+.empty {
+text-align: center;
+margin-top: 40px;
+color: #6b7280;
+font-size: 15px;
+}

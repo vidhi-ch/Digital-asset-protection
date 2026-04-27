@@ -1,0 +1,204 @@
+/* Page Container */
+.alert-page {
+background-color: #f5f7fb;
+min-height: 100vh;
+padding: 24px;
+}
+
+/* ================= HEADER ================= */
+
+.alert-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.alert-header h1 {
+font-size: 24px;
+font-weight: 600;
+color: #111827;
+}
+
+/* Count Badge */
+.alert-count-badge {
+background: #ef4444;
+color: white;
+padding: 6px 12px;
+border-radius: 20px;
+font-size: 13px;
+font-weight: 500;
+}
+
+/* Summary (cleaner, softer) */
+.alert-summary {
+background: #f9fafb;
+color: #374151;
+padding: 10px 14px;
+border-radius: 8px;
+margin-bottom: 20px;
+font-size: 14px;
+}
+
+/* ================= ALERT CARD ================= */
+
+.alert-card {
+display: flex;
+align-items: center;
+gap: 16px;
+background: #ffffff;
+padding: 16px;
+border-radius: 14px;
+margin-bottom: 16px;
+box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alert-card:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* High Risk Highlight */
+.alert-card.high-risk {
+border: 2px solid #ef4444;
+}
+
+/* Image */
+.alert-image {
+width: 140px;
+height: 85px;
+object-fit: cover;
+border-radius: 10px;
+}
+
+/* Info Section */
+.alert-info {
+flex: 1;
+}
+
+/* Match Name */
+.alert-match {
+font-size: 17px;
+font-weight: 600;
+margin-bottom: 4px;
+}
+
+/* General Text */
+.alert-text {
+font-size: 14px;
+color: #555;
+}
+
+/* Label */
+.alert-label {
+font-size: 14px;
+color: #2563eb;
+font-weight: 500;
+}
+
+/* Platform */
+.alert-platform {
+font-size: 12px;
+color: #888;
+}
+
+/* Status */
+.alert-status {
+font-size: 14px;
+margin-top: 6px;
+}
+
+/* Status Colors */
+.status-authorized {
+color: #16a34a;
+font-weight: 600;
+}
+
+.status-unauthorized {
+color: #dc2626;
+font-weight: 600;
+}
+
+.status-pending {
+color: #f59e0b;
+font-weight: 600;
+}
+
+/* ================= BUTTONS ================= */
+
+.alert-actions {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.btn {
+border: none;
+padding: 7px 12px;
+border-radius: 8px;
+cursor: pointer;
+color: white;
+font-size: 13px;
+transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn:active {
+transform: scale(0.95);
+}
+
+.btn-approve {
+background-color: #22c55e;
+}
+
+.btn-approve:hover {
+background-color: #16a34a;
+}
+
+.btn-reject {
+background-color: #ef4444;
+}
+
+.btn-reject:hover {
+background-color: #dc2626;
+}
+
+/* ================= POPUP ================= */
+
+.alert-popup {
+position: fixed;
+top: 20px;
+right: 20px;
+background: #ef4444;
+color: white;
+padding: 14px 18px;
+border-radius: 10px;
+box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+z-index: 1000;
+font-size: 14px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.alert-popup button {
+background: transparent;
+border: none;
+color: white;
+font-weight: bold;
+cursor: pointer;
+font-size: 14px;
+}
+
+.alert-popup button:hover {
+opacity: 0.8;
+}
+
+/* ================= EMPTY STATE ================= */
+
+.no-alerts {
+text-align: center;
+margin-top: 40px;
+color: #6b7280;
+font-size: 15px;
+}
