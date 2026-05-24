@@ -1,62 +1,98 @@
-# 🛡️ MediaShield AI
+🛡️ MediaShield AI
+AI-Powered Digital Media Rights Protection
 
-**AI-powered sports media rights protection platform** — detects unauthorized use of IPL cricket content across YouTube, Google, and the web using multi-layer fingerprinting and real-time monitoring.
+Built for the Google Solution Challenge 2026 — Team CodeStorm Duo
 
----
+MediaShield AI is a platform where any individual or organization can register their original media, automatically monitor the internet for unauthorized copies, and take action — powered entirely by Google Cloud AI.
 
-## 🚀 What It Does
+Note: Current prototype is designed for sports media (IPL/cricket) as a primary use case, with architecture built for extension to any content type.
 
-MediaShield AI helps sports organizations (like BCCI/IPL) automatically detect when their media content is being misused online — without manually searching the internet.
 
-### Feature 1 — Continuous Monitoring
-Organizations register their original media (images/videos) by uploading a file or pasting a URL. The system fingerprints the content using AI and then periodically scans YouTube, Google, and Reddit for unauthorized copies. Every match found is categorized as **Pending**, **Authorized**, or **Unauthorized** on a live dashboard.
+🚨 The Problem
+[ DIGITAL ASSET PROTECTION ] — Content creators, sports organizations, and media companies lose billions annually to unauthorized redistribution of their digital assets. Edited or re-uploaded content makes it nearly impossible to track the origin and ownership across platforms.
 
-### Feature 2 — Public Comparison Tool
-Anyone can report suspected misuse by submitting a URL. The system compares it against all registered originals and automatically alerts the relevant organization if a match is found.
-
----
-
-## 🏗️ Architecture
-
-```
-React Frontend (Chaitanya)
-        ↓ HTTP calls
-Node.js Backend (Chaitanya)
-        ↓ forwards to
-FastAPI ML Service (Vidhi) ← YOU ARE HERE
+🚀 Our Solution
+How It Works
+1. User uploads media or provides a YouTube / Instagram link
         ↓
-┌──────────────────────────────────────┐
-│         Google Cloud Stack           │
-│                                      │
-│  Vertex AI Multimodal Embeddings     │
-│  CLIP (secondary verification)       │
-│  Cloud Vision API                    │
-│  Video Intelligence API              │
-│  Gemini Vision                       │
-│  Cloud Storage                       │
-│  Firestore                           │
-│  Pub/Sub                             │
-│  Cloud Run                           │
-│  Cloud Scheduler                     │
-└──────────────────────────────────────┘
-```
+2. Vertex AI Fingerprinting + CLIP Verification
+        ↓
+3. Ranked results with similarity scores & source links shown in dashboard
+        ↓
+4. User verifies, flags, or reports unauthorized content
 
-### Dual Verification Logic
-- **Vertex AI Multimodal Embeddings** → primary similarity score
-- **CLIP (OpenAI)** → secondary verification, activates only in borderline zone (0.50–0.80)
-- **Gemini Vision** → contextual tampering analysis (logo removal, cropping, color filters)
-- **Cloud Vision API** → logo and text detection on individual frames
+✨ Features
+Multi-Layer Fingerprinting
+Upload media or paste a YouTube/Instagram URL. Vertex AI generates an AI fingerprint, stored instantly in Firestore + Cloud Storage.
+Automated Detections
+Cloud Scheduler triggers every 2 days. Searches YouTube Data API, SerpAPI, RapidAPI, and Reddit simultaneously.
+Gemini Vision Analysis
+Detects tampering evidence on matched content — identifies logo removal, watermark erasure, and color filters. Returns structured reasoning, not just a score.
+Live Detection Dashboard
+Live categorization: Pending / Authorized / Unauthorized. One-click Authorize or Reject controls with real-time updates via Firestore.
+Fully Cloud Deployed
+Google Cloud Run with Firestore, Pub/Sub alerts, and Cloud Scheduler. Auto-scales without infrastructure management.
+Manual Comparison (Future Addition)
+Upload or paste two URLs to compare directly. Returns similarity score + Gemini explanation.
 
----
+💡 How Is It Different?
+vs. Existing SolutionsMediaShield AI AdvantageYouTube Content IDWorks across all platforms (YouTube, Instagram, Google, Reddit)Exact-match only toolsDetects cropped, filtered & re-watermarked copiesSingle-API solutions11 Google Cloud tools in one unified pipelineManual monitoringRegister once — system monitors automatically
 
-## 📁 Project Structure
+🏗️ Architecture
+Frontend (React.js)
+        ↓ HTTP calls
+Node.js + Express Backend
+        ↓ forwards to
+FastAPI ML Service (Python)
+        ↓
+┌──────────────────────────────────────────┐
+│           Google Cloud Stack             │
+│                                          │
+│  Vertex AI Multimodal Embeddings         │
+│  Gemini Vision (gemini-1.5-pro)          │
+│  CLIP (OpenAI — secondary verification) │
+│  Cloud Storage                           │
+│  Cloud Firestore                         │
+│  Cloud Pub/Sub                           │
+│  Cloud Run                               │
+│  Cloud Scheduler                         │
+└──────────────────────────────────────────┘
+Dual Verification Logic
 
-```
+Vertex AI Multimodal Embeddings → primary similarity score (cosine similarity)
+CLIP (OpenAI) → secondary verification, activates only in borderline zone (0.50–0.80), weighted 60/40
+Gemini Vision → contextual tampering analysis (logo removal, cropping, color filters)
+
+
+🔄 Process Flow
+Organisation/User Original Media Detection
+User Logins & Uploads Original Media
+        ↓
+AI Fingerprinting & Stored in Cloud + Firestore
+        ↓
+Scan Triggered → YouTube, Instagram, Google, Reddit searched
+        ↓
+Compare Embeddings → If similarity > 50%, store detection
+        ↓
+Dashboard shows result → User reviews and takes actions
+Manual Comparison (Backend ready, frontend in next sprint)
+User Uploads Two Media / URLs for comparison
+        ↓
+Backend downloads both → Vertex AI creates Embeddings
+        ↓
+Cosine Similarity calculated → if needed, CLIP Verification
+        ↓
+Gemini does Vision Analysis
+        ↓
+Result returned with score + explanation
+
+⚙️ Tech Stack
+CategoryTechnologyGoogle AI & MLVertex AI Multimodal Embeddings, Gemini Vision (gemini-1.5-pro), CLIP (OpenAI — secondary)InfrastructureCloud Run, Cloud Scheduler, Cloud Pub/Sub, Cloud Firestore, Cloud StorageSearch / ScrapingYouTube Data API v3, RapidAPI (Google Images), SerpAPI (Instagram), Reddit Public APIFrontendReact.js, Firebase Hosting, Firebase AuthenticationBackendFastAPI + Python (ML service), Node.js + Express
+
+📁 Project Structure
 ml-service/
 ├── analysis/
-│   ├── gemini.py           # Gemini Vision comparison & tampering detection
-│   ├── video.py            # Video Intelligence API
-│   └── vision.py           # Cloud Vision API (logos, text, labels)
+│   └── gemini.py           # Gemini Vision comparison & tampering detection
 ├── core/
 │   ├── clip_embeddings.py  # CLIP secondary verification layer
 │   ├── embeddings.py       # Vertex AI Multimodal Embeddings
@@ -73,190 +109,36 @@ ml-service/
 ├── main.py                  # FastAPI app & all endpoints
 ├── Dockerfile
 └── requirements.txt
-```
 
----
+🔌 API Endpoints
+Registration
+MethodEndpointDescriptionPOST/registerRegister original media via file uploadPOST/register-urlRegister original media via URL
+Detection & Monitoring
+MethodEndpointDescriptionGET/detections/{media_id}Get all detections for a registered media, grouped by statusPOST/detections/updateMark detection as authorized / unauthorized / ignoredPOST/scan/triggerManually trigger a scan across all platforms
+Public Tool
+MethodEndpointDescriptionPOST/analyzeCompare two uploaded filesPOST/analyze-urlsCompare two media URLsPOST/reportReport suspected misuse — alerts org if match found
+Health
+MethodEndpointDescriptionGET/Health check
+Full interactive API docs available at /docs when running locally.
 
-## ⚙️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| ML Framework | Vertex AI Multimodal Embeddings, CLIP (HuggingFace) |
-| Smart Analysis | Gemini Vision (`gemini-1.5-pro`) |
-| Image Analysis | Cloud Vision API |
-| Video Analysis | Video Intelligence API |
-| Vector Search | Vertex AI Vector Search |
-| Database | Cloud Firestore |
-| File Storage | Cloud Storage |
-| Messaging | Cloud Pub/Sub |
-| Deployment | Cloud Run |
-| Scheduling | Cloud Scheduler |
-| API Framework | FastAPI |
-| Web Scraping | YouTube Data API v3, Google Custom Search, Reddit |
-
----
-
-## 🔌 API Endpoints
-
-### Registration
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/register` | Register original media via file upload |
-| `POST` | `/register-url` | Register original media via URL |
-
-### Detection & Monitoring
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/detections/{media_id}` | Get all detections for a registered media, grouped by status |
-| `POST` | `/detections/update` | Mark detection as authorized / unauthorized / ignored |
-| `POST` | `/scan/trigger` | Manually trigger a scan across all platforms |
-
-### Feature 2 — Public Tool
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/analyze` | Compare two uploaded files |
-| `POST` | `/analyze-urls` | Compare two media URLs |
-| `POST` | `/report` | Report suspected misuse — alerts org if match found |
-
-### Health
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/` | Health check |
-
-Full interactive API docs available at `/docs` when running locally.
-
----
-
-## 🛠️ Setup & Installation
-
-### Prerequisites
-- Python 3.11+
-- Google Cloud account with billing enabled
-- Google Cloud project with these APIs enabled:
-  - Vertex AI API
-  - Cloud Vision API
-  - Video Intelligence API
-  - Cloud Storage API
-  - Cloud Firestore API
-  - Cloud Pub/Sub API
-  - Cloud Run API
-  - Cloud Scheduler API
-  - YouTube Data API v3
-
-### Local Development
-
-```bash
-# Clone the repo
-git clone https://github.com/YOUR_USERNAME/mediashield-ai.git
-cd mediashield-ai/ml-service
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate        # Mac/Linux
-# venv\Scripts\activate         # Windows
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### Environment Variables
-
-Create `ml-service/.env`:
-
-```env
-GOOGLE_APPLICATION_CREDENTIALS=./service-account.json
-PROJECT_ID=your-gcp-project-id
-LOCATION=us-central1
-BUCKET_NAME=your-cloud-storage-bucket
-
-YOUTUBE_API_KEY=your-youtube-data-api-key
-GOOGLE_API_KEY=your-google-api-key
-GOOGLE_CX=your-custom-search-engine-id
-```
-
-Place your GCP service account JSON file at `ml-service/service-account.json`.
-
-### Run Locally
-
-```bash
-python main.py
-```
-
-API docs will be available at: `http://localhost:8000/docs`
-
----
-
-## ☁️ Cloud Deployment (Google Cloud Run)
-
-```bash
-cd ml-service
-
-gcloud run deploy mediashield-ml \
-  --source . \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --project YOUR_PROJECT_ID \
-  --set-env-vars PROJECT_ID=your-project,LOCATION=us-central1,BUCKET_NAME=your-bucket,YOUTUBE_API_KEY=your-key,GOOGLE_API_KEY=your-key,GOOGLE_CX=your-cx
-```
-
-After deployment you'll get a permanent URL:
-```
-https://mediashield-ml-xxxxxxxx-uc.a.run.app
-```
-
----
-
-## 🔄 How the Scan Pipeline Works
-
-```
-Cloud Scheduler (every 30 min)
-        ↓ POST /scan/trigger
-Fetch all registered media from Firestore
-        ↓
-Build search query from metadata (match name, teams, date)
-        ↓
-Search YouTube Data API + Google Custom Search + Reddit
-        ↓
-Download each result thumbnail/image
-        ↓
-Generate Vertex AI embedding
-        ↓
-Compare against original embedding (cosine similarity)
-        ↓ if score 0.50–0.80 (borderline)
-CLIP verification kicks in (weighted 60/40)
-        ↓ if score ≥ 0.70
-Store detection in Firestore
-        ↓
-Publish alert to Pub/Sub
-        ↓
-Dashboard updates in real time
-```
-
----
-
-## 🗄️ Firestore Schema
-
-### `registered_media` collection
-```json
-{
+🗄️ Firestore Schema
+registered_media collection
+json{
   "media_id": "IPL_CSKvsMI_a3f9b2c1",
-  "embedding": [0.23, -0.91, ...],
+  "embedding": [0.23, -0.91, "..."],
   "metadata": {
     "match_name": "CSK vs MI",
     "teams": "CSK, MI",
     "event_date": "2024-04-05",
     "organization": "IPL",
     "gcs_uri": "gs://bucket/originals/...",
-    "vision_data": { ... }
+    "vision_data": {}
   },
   "registered_at": "timestamp",
   "status": "active"
 }
-```
-
-### `detections` collection
-```json
-{
+detections collection
+json{
   "original_media_id": "IPL_CSKvsMI_a3f9b2c1",
   "source_url": "https://youtube.com/watch?v=...",
   "platform": "youtube",
@@ -270,19 +152,70 @@ Dashboard updates in real time
   "type": "periodic_scan",
   "reviewed": false
 }
-```
 
----
+🛠️ Setup & Installation
+Prerequisites
 
-## 🤝 Team
+Python 3.11+
+Google Cloud account with billing enabled
+Google Cloud project with the following APIs enabled:
 
-| Role | Person |
-|---|---|
-| ML Backend | Vidhi |
-| Frontend & Node Backend | Chaitanya |
+Vertex AI API
+Cloud Storage API
+Cloud Firestore API
+Cloud Pub/Sub API
+Cloud Run API
+Cloud Scheduler API
+YouTube Data API v3
 
----
+Local Development
+bash# Clone the repo
+git clone https://github.com/YOUR_USERNAME/mediashield-ai.git
+cd mediashield-ai/ml-service
 
-## 📝 License
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate        # Mac/Linux
+# venv\Scripts\activate         # Windows
 
-This project was built for a hackathon. All rights reserved.
+# Install dependencies
+pip install -r requirements.txt
+Environment Variables
+Create ml-service/.env:
+envGOOGLE_APPLICATION_CREDENTIALS=./service-account.json
+PROJECT_ID=your-gcp-project-id
+LOCATION=us-central1
+BUCKET_NAME=your-cloud-storage-bucket
+
+YOUTUBE_API_KEY=your-youtube-data-api-key
+GOOGLE_API_KEY=your-google-api-key
+GOOGLE_CX=your-custom-search-engine-id
+Place your GCP service account JSON at ml-service/service-account.json.
+Run Locally
+bashpython main.py
+API docs: http://localhost:8000/docs
+
+☁️ Cloud Deployment (Google Cloud Run)
+bashcd ml-service
+
+gcloud run deploy mediashield-ml \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --project YOUR_PROJECT_ID \
+  --set-env-vars PROJECT_ID=your-project,LOCATION=us-central1,BUCKET_NAME=your-bucket,YOUTUBE_API_KEY=your-key,GOOGLE_API_KEY=your-key,GOOGLE_CX=your-cx
+After deployment you'll get a permanent URL:
+https://mediashield-ml-xxxxxxxx-uc.a.run.app
+
+🔮 Future Development
+
+Manual Comparison Tool — Upload or input multiple media files/links and directly compare similarity scores for quick verification and validation.
+Real-time Monitoring System — Continuously scan online platforms and detect unauthorized media usage instantly instead of only on user input.
+Automated Alert & Notification System — Notify users when similar or unauthorized content is detected, enabling quicker action without manual checking.
+Expanded Search Coverage — Search across a wider range of platforms and domains for more comprehensive detection of duplicated or redistributed content.
+
+🤝 Team — CodeStorm Duo
+RolePersonTeam Leader & ML BackendVidhi ChandakFrontend & Node BackendChaitanya
+
+📝 License
+Built for Google Solution Challenge 2026. All rights reserved.
